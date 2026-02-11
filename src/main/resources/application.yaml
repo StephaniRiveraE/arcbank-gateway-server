@@ -13,25 +13,8 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "http://localhost:4000"
-              - "http://localhost:4001"
-              - "http://35.208.155.21:4000"
-              - "http://35.208.155.21:4001"
-              - "http://35.208.155.21"
-              - "https://35.208.155.21"
-              - "https://35.208.155.21:4000"
-              - "https://35.208.155.21:4001"
-              - "http://35.209.79.193:3000"
-              - "http://35.209.79.193:3001"
-              - "http://frontend-web-arcbank:80"
-              - "http://frontend-cajero-arcbank:80"
-              - "https://arcbank-bank.duckdns.org"
-              - "https://arcbank-bank.duckdns.org:8443"
-              - "http://arcbank-bucket.s3-website.us-east-2.amazonaws.com"
-              - "http://bantec-bucket.s3-website.us-east-2.amazonaws.com"
-              - "http://banca-ecosistema-arcbank-ventanilla-app-512be32e.s3-website.us-east-2.amazonaws.com"
-              - "http://banca-ecosistema-arcbank-web-client-512be32e.s3-website.us-east-2.amazonaws.com"
+            allowedOriginPatterns:
+              - "*"
             allowedMethods:
               - GET
               - POST
