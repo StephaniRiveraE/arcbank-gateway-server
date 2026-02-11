@@ -29,73 +29,73 @@ spring:
       routes:
         # RUTA 1: CLIENTES
         - id: clientes-service
-          uri: http://micro-clientes-arcbank:8080
+          uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/clientes/**
 
         # RUTA 2: PERSONAS
         - id: personas-service
-          uri: http://micro-clientes-arcbank:8080
+          uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/personas/**
 
         # RUTA 3: EMPRESAS
         - id: empresas-service
-          uri: http://micro-clientes-arcbank:8080
+          uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/empresas/**
 
         # RUTA 4: CUENTAS AHORROS
         - id: cuentas-ahorros-service
-          uri: http://micro-cuentas-arcbank:8081
+          uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/ahorros/**
 
         # RUTA 5: TASAS DE INTERÉS
         - id: tasas-service
-          uri: http://micro-cuentas-arcbank:8081
+          uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/tasas/**
 
         # RUTA 6: TIPOS DE CUENTA
         - id: tipos-cuenta-service
-          uri: http://micro-cuentas-arcbank:8081
+          uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/tipos-cuenta/**
 
         # RUTA 7: TRANSACCIONES
         - id: transacciones-service
-          uri: http://ms-transaccion-arcbank:8080
+          uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/transacciones/**
 
         # RUTA 8: BANCOS
         - id: bancos-service
-          uri: http://ms-transaccion-arcbank:8080
+          uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/bancos/**
 
         # RUTA 9: SUCURSALES
         - id: sucursales-service
-          uri: http://sucursales-arcbank:8080
+          uri: http://service-sucursales:80
           predicates:
             - Path=/arcbank/api/v1/sucursales/**
 
         # RUTA 10: CORE
         - id: core-service
-          uri: http://ms-transaccion-arcbank:8080
+          uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/core/**
         
         # RUTA 11: WEBHOOKS
         - id: webhook-incoming
-          uri: http://ms-transaccion-arcbank:8080
+          uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/incoming/**
 
         # RUTAS DE DOCUMENTACIÓN
         - id: clientes-docs
-          uri: http://micro-clientes-arcbank:8080
+          uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/v3/api-docs/clientes/**
           filters:
@@ -103,7 +103,7 @@ spring:
             - RewritePath=/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: cuentas-docs
-          uri: http://micro-cuentas-arcbank:8081
+          uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/v3/api-docs/cuentas/**
           filters:
@@ -111,7 +111,7 @@ spring:
             - RewritePath=/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: transacciones-docs
-          uri: http://ms-transaccion-arcbank:8080
+          uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/v3/api-docs/transacciones/**
           filters:
@@ -119,7 +119,7 @@ spring:
             - RewritePath=/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: sucursales-docs
-          uri: http://sucursales-arcbank:8080
+          uri: http://service-sucursales:80
           predicates:
             - Path=/arcbank/v3/api-docs/sucursales/**
           filters:
