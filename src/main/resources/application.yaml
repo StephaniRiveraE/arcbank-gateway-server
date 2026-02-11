@@ -45,7 +45,7 @@ spring:
       # FILTRO GLOBAL PARA PATH-BASED ROUTING
       # Esto permite que /arcbank/api/... se convierta en /api/... antes de ir al microservicio
       default-filters:
-        - RewritePath=/arcbank/(?<segment>.*), /$\{segment}
+        - StripPrefix=1
 
       routes:
         # RUTA 1: CLIENTES
