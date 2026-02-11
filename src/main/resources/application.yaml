@@ -11,7 +11,7 @@ spring:
         response-timeout: 45s
       # 1. ESTO SOLUCIONA LOS "MULTIPLE VALUES" (Deduplica los headers)
       default-filters:
-        - "DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST"
+        - "DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials"
       
       globalcors:
         corsConfigurations:
@@ -124,32 +124,32 @@ spring:
           predicates:
             - Path=/arcbank/v3/api-docs/clientes/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
-            - RewritePath=/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/arcbank/v3/api-docs/clientes/(.*), /v3/api-docs/$1
+            - RewritePath=/v3/api-docs/clientes/(.*), /v3/api-docs/$1
 
         - id: cuentas-docs
           uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/v3/api-docs/cuentas/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
-            - RewritePath=/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/arcbank/v3/api-docs/cuentas/(.*), /v3/api-docs/$1
+            - RewritePath=/v3/api-docs/cuentas/(.*), /v3/api-docs/$1
 
         - id: transacciones-docs
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/v3/api-docs/transacciones/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
-            - RewritePath=/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/arcbank/v3/api-docs/transacciones/(.*), /v3/api-docs/$1
+            - RewritePath=/v3/api-docs/transacciones/(.*), /v3/api-docs/$1
 
         - id: sucursales-docs
           uri: http://service-sucursales:80
           predicates:
             - Path=/arcbank/v3/api-docs/sucursales/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/$\{segment}
-            - RewritePath=/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/arcbank/v3/api-docs/sucursales/(.*), /v3/api-docs/$1
+            - RewritePath=/v3/api-docs/sucursales/(.*), /v3/api-docs/$1
 
 # Swagger UI Centralizado
 springdoc:
@@ -170,7 +170,7 @@ springdoc:
 
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway: INFO
     reactor.netty: INFO
 
 # Configuración de Integración APIM / Switch
