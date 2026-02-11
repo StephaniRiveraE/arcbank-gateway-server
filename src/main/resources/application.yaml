@@ -1,0 +1,160 @@
+server:
+  port: 8080 # El puerto público principal
+
+spring:
+  application:
+    name: api-gateway-arcbank
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 5000
+        response-timeout: 45s
+      # Configuración CORS global
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4000"
+              - "http://localhost:4001"
+              - "http://35.208.155.21:4000"
+              - "http://35.208.155.21:4001"
+              - "http://35.208.155.21"
+              - "https://35.208.155.21"
+              - "https://35.208.155.21:4000"
+              - "https://35.208.155.21:4001"
+              - "http://35.209.79.193:3000"
+              - "http://35.209.79.193:3001"
+              - "http://frontend-web-arcbank:80"
+              - "http://frontend-cajero-arcbank:80"
+              - "https://arcbank-bank.duckdns.org"
+              - "https://arcbank-bank.duckdns.org:8443"
+              - "http://arcbank-bucket.s3-website.us-east-2.amazonaws.com"
+              - "http://bantec-bucket.s3-website.us-east-2.amazonaws.com"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+      routes:
+        # RUTA 1: CLIENTES
+        - id: clientes-service
+          uri: http://micro-clientes-arcbank:8080
+          predicates:
+            - Path=/api/v1/clientes/**
+
+        # RUTA 2: PERSONAS
+        - id: personas-service
+          uri: http://micro-clientes-arcbank:8080
+          predicates:
+            - Path=/api/v1/personas/**
+
+        # RUTA 3: EMPRESAS
+        - id: empresas-service
+          uri: http://micro-clientes-arcbank:8080
+          predicates:
+            - Path=/api/v1/empresas/**
+
+        # RUTA 4: CUENTAS AHORROS
+        - id: cuentas-ahorros-service
+          uri: http://micro-cuentas-arcbank:8081
+          predicates:
+            - Path=/api/v1/cuentas/ahorros/**
+
+        # RUTA 5: TASAS DE INTERÉS
+        - id: tasas-service
+          uri: http://micro-cuentas-arcbank:8081
+          predicates:
+            - Path=/api/v1/cuentas/tasas/**
+
+        # RUTA 6: TIPOS DE CUENTA
+        - id: tipos-cuenta-service
+          uri: http://micro-cuentas-arcbank:8081
+          predicates:
+            - Path=/api/v1/cuentas/tipos-cuenta/**
+
+        # RUTA 7: TRANSACCIONES
+        - id: transacciones-service
+          uri: http://ms-transaccion-arcbank:8080
+          predicates:
+            - Path=/api/transacciones/**
+
+        # RUTA 8: BANCOS (Lista de bancos del switch interbancario)
+        - id: bancos-service
+          uri: http://ms-transaccion-arcbank:8080
+          predicates:
+            - Path=/api/bancos/**
+
+        # RUTA 9: SUCURSALES
+        - id: sucursales-service
+          uri: http://sucursales-arcbank:8080
+          predicates:
+            - Path=/api/v1/sucursales/**
+
+
+        # RUTA 10: CORE (Transacciones / Webhooks Legados)
+        - id: core-service
+          uri: http://ms-transaccion-arcbank:8080
+          predicates:
+            - Path=/api/core/**
+        
+        # RUTA 11: WEBHOOKS V3.0 (Switch Standard)
+        - id: webhook-incoming
+          uri: http://ms-transaccion-arcbank:8080
+          predicates:
+            - Path=/api/incoming/**
+
+        # RUTAS DE DOCUMENTACIÓN (Discovery for API Manager)
+        - id: clientes-docs
+          uri: http://micro-clientes-arcbank:8080
+          predicates:
+            - Path=/v3/api-docs/clientes/**
+          filters:
+            - RewritePath=/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
+
+        - id: cuentas-docs
+          uri: http://micro-cuentas-arcbank:8081
+          predicates:
+            - Path=/v3/api-docs/cuentas/**
+          filters:
+            - RewritePath=/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
+
+        - id: transacciones-docs
+          uri: http://ms-transaccion-arcbank:8080
+          predicates:
+            - Path=/v3/api-docs/transacciones/**
+          filters:
+            - RewritePath=/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
+
+        - id: sucursales-docs
+          uri: http://sucursales-arcbank:8080
+          predicates:
+            - Path=/v3/api-docs/sucursales/**
+          filters:
+            - RewritePath=/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/$\{segment}
+
+# Swagger UI Centralizado
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - name: 1. Micro Clientes
+        url: /v3/api-docs/clientes
+      - name: 2. Micro Cuentas
+        url: /v3/api-docs/cuentas
+      - name: 3. MS Transacción
+        url: /v3/api-docs/transacciones
+      - name: 4. Micro Sucursales
+        url: /v3/api-docs/sucursales
+
+# Configuración para ver los logs de ruteo (útil para debug)
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: INFO
