@@ -9,7 +9,10 @@ spring:
       httpclient:
         connect-timeout: 5000
         response-timeout: 45s
-      # Configuración CORS global
+      # 1. ESTO SOLUCIONA LOS "MULTIPLE VALUES" (Deduplica los headers)
+      default-filters:
+        - DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -32,66 +35,88 @@ spring:
           uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/clientes/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 2: PERSONAS
         - id: personas-service
           uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/personas/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 3: EMPRESAS
         - id: empresas-service
           uri: http://service-clientes:80
           predicates:
             - Path=/arcbank/api/v1/empresas/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 4: CUENTAS AHORROS
         - id: cuentas-ahorros-service
           uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/ahorros/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 5: TASAS DE INTERÉS
         - id: tasas-service
           uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/tasas/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 6: TIPOS DE CUENTA
         - id: tipos-cuenta-service
           uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/api/v1/cuentas/tipos-cuenta/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 7: TRANSACCIONES
         - id: transacciones-service
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/transacciones/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 8: BANCOS
         - id: bancos-service
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/bancos/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 9: SUCURSALES
         - id: sucursales-service
           uri: http://service-sucursales:80
           predicates:
             - Path=/arcbank/api/v1/sucursales/**
+          filters:
+            - StripPrefix=1
 
         # RUTA 10: CORE
         - id: core-service
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/core/**
+          filters:
+            - StripPrefix=1
         
         # RUTA 11: WEBHOOKS
         - id: webhook-incoming
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/api/incoming/**
+          filters:
+            - StripPrefix=1
 
         # RUTAS DE DOCUMENTACIÓN
         - id: clientes-docs
