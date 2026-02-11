@@ -11,7 +11,7 @@ spring:
         response-timeout: 45s
       # 1. ESTO SOLUCIONA LOS "MULTIPLE VALUES" (Deduplica los headers)
       default-filters:
-        - DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        - "DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST"
       
       globalcors:
         corsConfigurations:
