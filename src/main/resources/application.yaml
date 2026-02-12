@@ -1,6 +1,16 @@
 server:
   port: 8080 # El puerto público principal
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 spring:
   application:
     name: api-gateway-arcbank
@@ -9,17 +19,6 @@ spring:
       httpclient:
         connect-timeout: 5000
         response-timeout: 45s
-      # 1. ESTO SOLUCIONA LOS "MULTIPLE VALUES" (Deduplica los headers)
-      default-filters:
-        - DeduplicateResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-      
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOriginPatterns: ["*"]
-            allowedMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-            allowedHeaders: ["*"]
-            allowCredentials: true
       
 
       routes:
@@ -117,32 +116,32 @@ spring:
           predicates:
             - Path=/arcbank/v3/api-docs/clientes/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/${segment}
-            - RewritePath=/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/${segment}
+            - RewritePath=/arcbank/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/v3/api-docs/clientes/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: cuentas-docs
           uri: http://service-cuentas:80
           predicates:
             - Path=/arcbank/v3/api-docs/cuentas/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/${segment}
-            - RewritePath=/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/${segment}
+            - RewritePath=/arcbank/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/v3/api-docs/cuentas/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: transacciones-docs
           uri: http://service-transacciones:80
           predicates:
             - Path=/arcbank/v3/api-docs/transacciones/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/${segment}
-            - RewritePath=/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/${segment}
+            - RewritePath=/arcbank/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/v3/api-docs/transacciones/(?<segment>.*), /v3/api-docs/$\{segment}
 
         - id: sucursales-docs
           uri: http://service-sucursales:80
           predicates:
             - Path=/arcbank/v3/api-docs/sucursales/**
           filters:
-            - RewritePath=/arcbank/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/${segment}
-            - RewritePath=/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/${segment}
+            - RewritePath=/arcbank/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/$\{segment}
+            - RewritePath=/v3/api-docs/sucursales/(?<segment>.*), /v3/api-docs/$\{segment}
 
 # Swagger UI Centralizado
 springdoc:
