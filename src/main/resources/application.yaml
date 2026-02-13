@@ -110,6 +110,14 @@ spring:
           filters:
             - StripPrefix=1
 
+        # RUTA 12: HEALTH CHECK
+        - id: health-check
+          uri: http://service-transacciones:80
+          predicates:
+            - Path=/arcbank/health
+          filters:
+            - RewritePath=/arcbank/health, /actuator/health
+
         # RUTAS DE DOCUMENTACIÓN
         - id: clientes-docs
           uri: http://service-clientes:80
