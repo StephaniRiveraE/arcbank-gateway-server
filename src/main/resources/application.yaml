@@ -177,7 +177,7 @@ logging:
 cognito:
   token-url: ${COGNITO_TOKEN_URL:https://auth-banca-digiconecu-dev-lhd4go.auth.us-east-2.amazoncognito.com/oauth2/token}
   client-id: ${COGNITO_CLIENT_ID:3jprfuk1phejsm0sjr8p50n91e}
-  client-secret: ${COGNITO_CLIENT_SECRET:change-me}
+  client-secret: ${COGNITO_CLIENT_SECRET:1sbg167h178p9cgfradk51c2qla1u4d5en3tnmljc91kc9rbn9nr}
 
 apim:
   base-url: ${APIM_BASE_URL:https://gf0js7uezg.execute-api.us-east-2.amazonaws.com/dev}
